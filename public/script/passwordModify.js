@@ -23,7 +23,9 @@ function forgotPassword(email) {
       $("#resetPasswordLink").attr("href", response.data.resetURL);
     })
     .catch((error) => {
-      $("#forgotError").text(error.response.data.message).show();
+      if (error.response.data.status === "fail") {
+        $("#forgotError").text("User Not Found").show();
+      }
     });
 }
 

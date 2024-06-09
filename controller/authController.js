@@ -75,10 +75,9 @@ exports.forgetPassword = catchAsync(async (req, res, next) => {
   const user = await User.findOne({ email: req.body.email }).select(
     "+password"
   );
-  if (!user) return next(new AppError("User Does Not Exist"));
+  if (!user) return next(new AppError("User Does Not Exist", 404));
   const resetToken = user.getResetToken();
   await user.save({ validateBeforeSave: false });
-  // sending mail
   const resetURL = `${req.protocol}://${req.get(
     "host"
   )}/resetPassword/${resetToken}`;
